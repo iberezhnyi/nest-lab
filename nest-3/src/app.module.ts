@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { getMongoConfig } from 'configs/mongo.config'
 import { UsersModule } from './users/users.module'
 import { LoggerMiddleware } from 'middleware/middleware'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LoggerMiddleware } from 'middleware/middleware'
       useFactory: getMongoConfig,
     }),
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule implements NestModule {
