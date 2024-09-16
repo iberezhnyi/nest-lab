@@ -1,22 +1,23 @@
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { getMongoConfig } from 'configs/mongo.config'
-import { UsersModule } from './users/users.module'
+import { AppConfigService } from 'configs/AppConfigService'
+// import { UsersModule } from './users/users.module'
+// import { AuthModule } from './auth/auth.module'
+// import { TasksModule } from './tasks/tasks.module'
 import { LoggerMiddleware } from 'middleware/middleware'
-import { AuthModule } from './auth/auth.module'
+// import { ConfigModule } from '@nestjs/config'
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: getMongoConfig,
+      useFactory: (configService: AppConfigService) => ({
+        uri: configService.mongoHost,
+      }),
+      inject: [AppConfigService],
     }),
-    UsersModule,
-    AuthModule,
   ],
+  providers: [AppConfigService], // Добавляем AppConfigService как провайдер
+  exports: [AppConfigService], // Экспортируем его, чтобы он был доступен в других модулях
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

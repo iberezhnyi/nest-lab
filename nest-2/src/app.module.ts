@@ -6,6 +6,7 @@ import { TasksModule } from './tasks/tasks.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
 import { getMongoConfig } from './configs/mongo.config'
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { getMongoConfig } from './configs/mongo.config'
     }),
     AuthModule,
     TasksModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
